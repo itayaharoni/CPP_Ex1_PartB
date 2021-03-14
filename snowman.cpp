@@ -1,14 +1,21 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <array>
 using namespace std;
-#define ROW 5
-#define COL 7
-#define TEN 10
 namespace ariel{
+    const int ROW=5;
+    const int COL=7;
+    const int TEN=10;
+    const int ONE=1;
+    const int TWO=2;
+    const int THREE=3;
+    const int FOUR=4;
+    const int INPUT_LEN=8;
+    const int ZERO=0;
 int reverse_number(int x){
-    int i=0;
-    while(x>0){
+    int i=ZERO;
+    while(x>ZERO){
         i*=TEN;
         i+=x%TEN;
         x/=TEN;
@@ -16,264 +23,278 @@ int reverse_number(int x){
     return i;
 }
 bool is_size(int x){
-    int count=0;
-    while(x>0){
+    int count=ZERO;
+    while(x>ZERO){
         count++;
         x/=TEN;
     }
-    return count==8;
+    return count==INPUT_LEN;
 }
 bool is_bound(int x){
-    while(x>0){
-        if(x%TEN==0 || x%TEN>4) return false;
+    while(x>ZERO){
+        if(x%TEN==ZERO || x%TEN>FOUR){
+         return false;
+        }
         x/=TEN;
     }
     return true;
 }
-int hat(char mat[][COL],int choice,int line){
+int hat(array<array<char,COL>,ROW>* mat,int choice,int line){
     std::string hat_choice;
     switch(choice){
-        case 1:
+        case ONE:
         hat_choice="_===_";
         break;
-        case 2:
+        case TWO:
         hat_choice=" ___\n.....";
         break;
-        case 3:
+        case THREE:
         hat_choice="  _\n /_\\";
         break;
-        case 4:
+        case FOUR:
         hat_choice=" ___\n(_*_)";
         break;
         default:
         throw std:: out_of_range{"An unvalid choice of an hat!\n"};
     }
-    int j=0;
-    for (int i = 0; i <(int)hat_choice.length(); i++){
+    int j=ZERO;
+    for (int i = ZERO; i <(int)hat_choice.length(); i++){
         if(hat_choice.at(i)=='\n'){ 
             line++;
-            j=0;
+            j=ZERO;
         }
-        else mat[line][j++]=hat_choice.at(i);
+        else{ (*mat).at(line).at(j++)=hat_choice.at(i);}
     }
-    return line+1;
+    return line+ONE;
 }
-int nose_or_mouth(char mat[][COL],int choice,int line){
+int nose_or_mouth(array<array<char,COL>,ROW>* mat,int choice,int line){
        std::string nose_or_mouth_choice;
     switch(choice){
-        case 1:
+        case ONE:
         nose_or_mouth_choice="( , )";
         break;
-        case 2:
+        case TWO:
         nose_or_mouth_choice="( . )";
         break;
-        case 3:
+        case THREE:
         nose_or_mouth_choice="( _ )";
         break;
-        case 4:
+        case FOUR:
         nose_or_mouth_choice="(   )";
         break;
         default:
         throw std:: out_of_range{"An unvalid choice of a nose/mouth!\n"};
     }
-    for (int i = 0; i <(int)nose_or_mouth_choice.length(); i++)
-        mat[line][i]=nose_or_mouth_choice.at(i);
+    for (int i = ZERO; i <(int)nose_or_mouth_choice.length(); i++){
+        (*mat).at(line).at(i)=nose_or_mouth_choice.at(i);
+    }
     return line;
 }
-int left_eye(char mat[][COL],int choice,int line){
-       char left_eye_choice;
+int left_eye(array<array<char,COL>,ROW>* mat,int choice,int line){
+       char left_eye_choice=ZERO;
     switch(choice){
-        case 1:
+        case ONE:
         left_eye_choice='.';
         break;
-        case 2:
+        case TWO:
         left_eye_choice='o';
         break;
-        case 3:
+        case THREE:
         left_eye_choice='O';
         break;
-        case 4:
+        case FOUR:
         left_eye_choice='-';
         break;
         default:
         throw std:: out_of_range{"An unvalid choice of a left eye!\n"};
     }
-    for (int i = 0; i <COL; i++){
-        if(mat[line][i]=='('){
-            mat[line][i+1]=left_eye_choice;
+    for (int i = ZERO; i <COL; i++){
+        if((*mat).at(line).at(i)=='('){
+            (*mat).at(line).at(i+ONE)=left_eye_choice;
             break;
         }
     }
     return line;
 }
-int right_eye(char mat[][COL],int choice,int line){
-       char right_eye_choice;
+int right_eye(array<array<char,COL>,ROW>* mat,int choice,int line){
+       char right_eye_choice=ZERO;
     switch(choice){
-        case 1:
+        case ONE:
         right_eye_choice='.';
         break;
-        case 2:
+        case TWO:
         right_eye_choice='o';
         break;
-        case 3:
+        case THREE:
         right_eye_choice='O';
         break;
-        case 4:
+        case FOUR:
         right_eye_choice='-';
         break;
         default:
         throw std:: out_of_range{"An unvalid choice of a right eye!\n"};
     }
-    for (int i = 0; i <COL; i++){
-        if(mat[line][i]==')'){
-            mat[line][i-1]=right_eye_choice;
+    for (int i = ZERO; i <COL; i++){
+        if((*mat).at(line).at(i)==')'){
+            (*mat).at(line).at(i-ONE)=right_eye_choice;
             break;
         }
     }
-    return line+1;
+    return line+ONE;
 }
 
-void shift_mat_right_by_one(char mat[][COL], int line){
+void shift_mat_right_by_one(array<array<char,COL>,ROW>* mat, int line){
 
-    // Shifting every element in the char mat to the right by 1.
-    for (int i = 0; i < line ; i++)
-        for (int j = ROW; j>0; j--)
-            mat[i][j]=mat[i][j-1];
-
+    // Shifting every element in the char mat to the right by ONE.
+    for (int i = ZERO; i < line ; i++){
+        for (int j = COL-1; j>ZERO; j--){
+            (*mat).at(i).at(j)=(*mat).at(i).at(j-ONE);
+            }
+        }
     // Resetting the value of all the first collom chars to the value - " ".    
-    for (int i = 0; i < line; i++)
-        mat[i][0]=' ';
+    for (int i = ZERO; i < line; i++){
+        (*mat).at(i).at(ZERO)=' ';
+    }
 }
-int left_arm(char mat[][COL],int choice,int line){
-       char left_arm_choice;
+int left_arm(array<array<char,COL>,ROW>* mat,int choice,int line){
+       char left_arm_choice=ZERO;
     switch(choice){
-        case 1:
+        case ONE:
         left_arm_choice='<';
         break;
-        case 2:
+        case TWO:
         left_arm_choice='\\';
         break;
-        case 3:
+        case THREE:
         left_arm_choice='/';
         break;
-        case 4:
+        case FOUR:
         return line;
         default:
         throw std:: out_of_range{"An unvalid choice of a left arm!\n"};
     }
-    shift_mat_right_by_one(mat,line+1);
-    if(choice==2) mat[line-1][0]=left_arm_choice;
-    else mat[line][0]=left_arm_choice;
+    shift_mat_right_by_one(mat,line+ONE);
+    if(choice==TWO){ 
+        (*mat).at(line-ONE).at(ZERO)=left_arm_choice;
+    }
+    else{ 
+        (*mat).at(line).at(ZERO)=left_arm_choice;
+    }
     return line;
 }
-int right_arm(char mat[][COL],int choice,int line){
-       char right_arm_choice;
+int right_arm(array<array<char,COL>,ROW>* mat,int choice,int line){
+       char right_arm_choice=ZERO;
     switch(choice){
-        case 1:
+        case ONE:
         right_arm_choice='>';
         break;
-        case 2:
+        case TWO:
         right_arm_choice='/';
         break;
-        case 3:
+        case THREE:
         right_arm_choice='\\';
         break;
-        case 4:
-        return line+1;
+        case FOUR:
+        return line+ONE;
         default:
         throw std:: out_of_range{"An unvalid choice of a right arm!\n"};
     }
-    for (int i = 0; i < COL; i++)
+    for (int i = ZERO; i < COL; i++)
     {
-        if(mat[line][i]==')'){
-            if(choice==2) mat[line-1][i+1]=right_arm_choice;
-            else mat[line][i+1]=right_arm_choice;
+        if((*mat).at(line).at(i)==')'){
+            if(choice==TWO){ (*mat).at(line-ONE).at(i+ONE)=right_arm_choice;}
+            else{ (*mat).at(line).at(i+ONE)=right_arm_choice;}
             break;
         }
     }
-    return line+1;
+    return line+ONE;
 }
-int get_index_of(char* str, char c){
-    for (int i = 0; i < COL; i++)
+int get_index_of(array<char,COL> str, char c){
+    for (int i = ZERO; i < COL; i++)
     {
-        if(str[i]==c) return i;
+        if(str.at(i)==c){ return i;}
     }
-    return -1;
+    return -ONE;
 }
-int torso(char mat[][COL],int choice,int line){
+int torso(array<array<char,COL>,ROW>* mat,int choice,int line){
     std::string torso_choice;
     switch(choice){
-        case 1:
+        case ONE:
         torso_choice="( : )";
         break;
-        case 2:
+        case TWO:
         torso_choice="(] [)";
         break;
-        case 3:
+        case THREE:
         torso_choice="(> <)";
         break;
-        case 4:
+        case FOUR:
         torso_choice="(   )";
         break;
         default:
         throw std:: out_of_range{"An unvalid choice of a torso!\n"};
     }
-    int col=get_index_of(mat[line-1],'(');
-    for (int i = 0; i < (int)torso_choice.length() ; i++)
-        mat[line][i+col]=torso_choice.at(i);
+
+    int col=get_index_of((*mat).at(line-ONE),'(');
+    for (int i = ZERO; i < ((int)torso_choice.length()) ; i++){
+        (*mat).at(line).at(i+col)=torso_choice.at(i);
+    }
     return line;
 }
-int base(char mat[][COL],int choice,int line){
+int base(array<array<char,COL>,ROW>* mat,int choice,int line){
     std::string torso_choice;
     switch(choice){
-        case 1:
+        case ONE:
         torso_choice="( : )";
         break;
-        case 2:
+        case TWO:
         torso_choice="(\" \")";
         break;
-        case 3:
+        case THREE:
         torso_choice="(___)";
         break;
-        case 4:
+        case FOUR:
         torso_choice="(   )";
         break;
         default:
         throw std:: out_of_range{"An unvalid choice of a base!\n"};
     }
-    int col=get_index_of(mat[line-1],'(');
-    for (int i = 0; i <(int)torso_choice.length() ; i++)
-        mat[line][i+col]=torso_choice.at(i);
-    return line+1;
+    int col=get_index_of((*mat).at(line-ONE),'(');
+    for (int i = ZERO; i <((int)torso_choice.length()) ; i++){
+        (*mat).at(line).at(i+col)=torso_choice.at(i);
+    }
+    return line+ONE;
 }
-std::string mat_to_string(char mat[][COL],int line){
-    std::string ans="";
-    for (int i = 0; i < line; i++)
+std::string mat_to_string(array<array<char,COL>,ROW>* mat,int line){
+    std::string ans;
+    for (int i = ZERO; i < line; i++)
     {
-        if(i!=0) ans.push_back('\n');
-        for (int j = 0; j < COL; j++)
+        if(i!=ZERO){ ans.push_back('\n');}
+        for (int j = ZERO; j < COL; j++)
         {
-            if(mat[i][j]=='\n') printf("Hello");
-           if(mat[i][j]==' '&& j>4) break;
-            ans.push_back(mat[i][j]);
+           if((*mat).at(i).at(j)==' '&& j>FOUR){ break;}
+            ans.push_back((*mat).at(i).at(j));
         }
     }
     ans.push_back('\n');
     return ans;
 }
-void reset_mat(char mat[][COL]){
-    for (int i = 0; i < ROW; i++)
-        for (int j = 0; j < COL; j++)
-            mat[i][j]=' ';
+void reset_mat(array<array<char,COL>,ROW>* mat){
+    for (int i = ZERO; i < ROW; i++){
+        for (int j = ZERO; j < COL; j++){
+            (*mat).at(i).at(j)=' ';
+    }
+}
 }
 std::string snowman(int combination){
-    if(combination<0) throw std:: out_of_range{"Combination must be positive!\n"};
-    else if(!is_size(combination)) throw std:: out_of_range{"Combination must consist of 8 digits.\n"};
-    else if(!is_bound(combination)) throw std:: out_of_range{"Combination must consist of the digits: {1,2,3,4} !\n"};
+    if(combination<ZERO){ throw std:: out_of_range{"Combination must be positive!\n"};}
+    if(!is_size(combination)){ throw std:: out_of_range{"Combination must consist of=INPUT_LEN digits.\n"};}
+    if(!is_bound(combination)){ throw std:: out_of_range{"Combination must consist of the digits: {ONE,TWO,THREE,FOUR} !\n"};}
     int reverse_combination=reverse_number(combination);
-    char snowman_mat[ROW][COL];
+    array<array<char,COL>,ROW> mat{};
+    array<array<char,COL>,ROW>* snowman_mat=&mat;
     reset_mat(snowman_mat);
-    int line=hat(snowman_mat,reverse_combination%TEN,0);
+    int line=hat(snowman_mat,reverse_combination%TEN,ZERO);
     reverse_combination/=TEN;
     line=nose_or_mouth(snowman_mat,reverse_combination%TEN,line);
     reverse_combination/=TEN;
